@@ -40,7 +40,7 @@ export function Graphics() {
         console.log('Temperatures:', temperatures);
 
         const formattedDates = Array.isArray(data[0]?.data)
-          ? data[0].data.map(entry => moment(entry.date, 'YYYY-MM-DD HH:mm:ss').toDate())
+        ? data[0].data.map(entry => moment(entry.date).format('YYYY-MM-DD HH:mm:ss'))
           : [];
 
         console.log('Formatted Dates:', formattedDates);
@@ -64,12 +64,12 @@ export function Graphics() {
   const chartOptions = {
     scales: {
       x: {
-        type: 'time', // Utilisez 'time' pour l'échelle temporelle
+        type: 'time', 
         position: 'bottom',
         time: {
-          unit: 'hour', // Réglez l'unité de temps en fonction de vos besoins
+          unit: 'hour', 
           displayFormats: {
-            hour: 'HH:mm', // Format pour afficher l'heure
+            hour: 'HH:mm', 
           },
         },
         title: {
