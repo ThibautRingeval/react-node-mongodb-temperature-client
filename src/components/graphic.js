@@ -39,10 +39,14 @@ export function Graphics() {
 
         console.log('Temperatures:', temperatures);
 
+        const formattedDates = Array.isArray(data[0]?.data)
+          ? data[0].data.map(entry => moment(entry.date, 'YYYY-MM-DD HH:mm:ss').toDate())
+          : [];
+
+        console.log('Formatted Dates:', formattedDates);
+
         const updatedChartData = {
-          labels: Array.isArray(temperatures)
-            ? temperatures.map(entry => moment(entry?.date).format('HH:mm:ss'))
-            : [],
+          labels: formattedDates,
           datasets: [
             {
               ...chartData.datasets[0],
@@ -50,7 +54,7 @@ export function Graphics() {
             },
           ],
         };
-        
+
         setChartData(updatedChartData);
         setTemperatureData(temperatures);
       })
@@ -60,8 +64,14 @@ export function Graphics() {
   const chartOptions = {
     scales: {
       x: {
-        type: 'linear',
+        type: 'time', // Utilisez 'time' pour l'échelle temporelle
         position: 'bottom',
+        time: {
+          unit: 'hour', // Réglez l'unité de temps en fonction de vos besoins
+          displayFormats: {
+            hour: 'HH:mm', // Format pour afficher l'heure
+          },
+        },
         title: {
           display: true,
           text: 'Heures',
@@ -69,7 +79,7 @@ export function Graphics() {
       },
       y: {
         beginAtZero: true,
-        max: 40,
+        max: 30,
         title: {
           display: true,
           text: 'Température (°C)',
