@@ -4,6 +4,7 @@ import 'chart.js/auto';
 import 'chartjs-adapter-moment';
 import { Line } from 'react-chartjs-2';
 import moment from 'moment';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export function Graphics() {
   const [temperatureData, setTemperatureData] = useState([]);
@@ -22,6 +23,7 @@ export function Graphics() {
     ],
   });
 
+  //Utilisation de l'API pour les donnees
   useEffect(() => {
     fetch('http://localhost:3001/getTemperatureData')
       .then(response => {
@@ -33,11 +35,15 @@ export function Graphics() {
       .then(data => {
         console.log('Data from API:', data);
 
+        //donnee temperature presente dans le JSON
+
         const temperatures = Array.isArray(data[0]?.data)
           ? data[0].data.map(entry => entry.temperature)
           : [];
 
         console.log('Temperatures:', temperatures);
+
+        //donnee date presente dans le tableau
 
         const formattedDates = Array.isArray(data[0]?.data)
         ? data[0].data.map(entry => moment(entry.date).format('YYYY-MM-DD HH:mm:ss'))
@@ -88,12 +94,14 @@ export function Graphics() {
     },
   };
 
+  //Utilisation de chart.js pour afficher la courbe et Link to pour revenir à la page
+
   return (
-    <div>
+    <div className="container text-center mt-8">
       <h1>Graphique</h1>
       <Line key={Math.random()} data={chartData} options={chartOptions} />
-      <nav>
-        <Link to="/">Retour à la page d'accueil</Link>
+      <nav className="mt-3">
+        <Link to="/" className="btn btn-primary">Retour à la page d'accueil</Link>
       </nav>
     </div>
   );
